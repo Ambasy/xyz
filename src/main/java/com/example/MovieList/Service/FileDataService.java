@@ -8,4 +8,5 @@ public interface FileDataService {
     List<FileDataEntity> getListOfMoviesInGivenYear(String director, String startYear, String endYear);
     List<FileDataEntity> getHighestBudgetMovie(String year, String country);
     List<FileDataEntity> getMovieWithHigherRating(Integer rating);
+    public void saveData();
 }

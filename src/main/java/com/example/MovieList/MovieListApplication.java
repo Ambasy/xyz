@@ -2,6 +2,7 @@ package com.example.MovieList;
 
 import com.example.MovieList.Entity.FileDataEntity;
 import com.example.MovieList.Repository.FileDataRepository;
+import com.example.MovieList.Service.FileDataService;
 import com.example.MovieList.Timer.ExecuterTimeInterceptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,9 +20,12 @@ import java.io.IOException;
 @SpringBootApplication
 public class MovieListApplication extends WebMvcConfigurerAdapter implements CommandLineRunner {
 	private static final Logger LOGGER = LoggerFactory.getLogger(MovieListApplication.class);
+
 	@Autowired
-	FileDataRepository fileRepository;
-	String line = "";
+	FileDataService fileDataService;
+//	@Autowired
+//	FileDataRepository fileRepository;
+//	String line = "";
 
 	public static void main(String[] args) {
 		SpringApplication.run(MovieListApplication.class, args);
@@ -42,41 +46,8 @@ public class MovieListApplication extends WebMvcConfigurerAdapter implements Com
 	 * @throws IOException
 	 */
 	public void run(String... args) throws IOException {
-		BufferedReader bufferedReader=null;
-		int iteration=0;
-		try {
-			LOGGER.info("Start storing the CSV file data in PostgreSQL database");
-			bufferedReader = new BufferedReader(new FileReader("src/main/resources/movies.csv"));
-			while ((line = bufferedReader.readLine()) != null) {
-				if(iteration == 0) {
-					iteration++;
-					continue;
-				}
-				//Regex to split the data of CSV File
-				String data[] = line.split(",(?=([^\"]*\"[^\"]*\")*[^\"]*$)",-1);
-
-				FileDataEntity fileDataEntity = new FileDataEntity(data[0], data[1], data[2], data[3], data[4], data[5], data[6], data[7], data[8], data[9], data[10], data[11], data[12], data[13], data[14], data[15], data[17], data[18], data[19], data[21]);
-				if(!data[16].isEmpty()) {
-					fileDataEntity.setBudget(Integer.parseInt(data[16]));
-				}
-				if(!data[20].isEmpty()) {
-					fileDataEntity.setReviews_from_users(Integer.parseInt(data[20]));
-				}
-				fileRepository.save(fileDataEntity);
-			}
-			LOGGER.info("Data is successfully stored in PostgreSQL database");
-		} catch (Exception e) {
-			LOGGER.error("Exception:" + e);
-		}finally {
-			// this block will be executed in every case, success or caught exception
-			if (bufferedReader != null) {
-				// again, a resource is involved, so try-catch another time
-				try {
-					bufferedReader.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
-		}
+		LOGGER.info("Start Storing Data in Database");
+		fileDataService.saveData();
+		LOGGER.info("Stored Successfully");
 	}
 }
