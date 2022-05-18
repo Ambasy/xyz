@@ -6,8 +6,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -34,7 +34,7 @@ public class FileDataServiceImpl implements FileDataService {
         } catch (Exception e) {
             LOGGER.error("Not able to fetch data");
         }
-        return null;
+        return Collections.emptyList();
     }
 
     /**
@@ -53,7 +53,7 @@ public class FileDataServiceImpl implements FileDataService {
         } catch (Exception e) {
             LOGGER.error("Not able to fetch data");
         }
-        return null;
+        return Collections.emptyList();
     }
 
     /**
@@ -71,6 +71,6 @@ public class FileDataServiceImpl implements FileDataService {
         } catch (Exception e) {
             LOGGER.error("Not able to fetch data");
         }
-        return null;
+        return Collections.emptyList();
     }
 }

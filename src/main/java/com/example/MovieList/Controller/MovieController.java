@@ -2,7 +2,6 @@ package com.example.MovieList.Controller;
 
 import com.example.MovieList.Entity.FileDataEntity;
 import com.example.MovieList.Service.FileDataService;
-import com.example.MovieList.Service.FileDataServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +9,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -89,7 +87,7 @@ public class MovieController {
     public ResponseEntity<List<FileDataEntity>> listOfMoviesOfHighBudget(@RequestHeader("X-AUTH-TOKEN") String XAuthToken,@RequestParam String year, @RequestParam String country) {
         try {
             if(XAuthToken.equals(authToken)) {
-                LOGGER.info("Query based on parameter year:{},country:{}, endYear:{}",year,country);
+                LOGGER.info("Query based on parameter year:{},country:{}",year,country);
                 List<FileDataEntity> data=fileService.getHighestBudgetMovie(year,country);
                 return ResponseEntity.status(HttpStatus.OK).body(data);
             }

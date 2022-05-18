@@ -42,10 +42,11 @@ public class MovieListApplication extends WebMvcConfigurerAdapter implements Com
 	 * @throws IOException
 	 */
 	public void run(String... args) throws IOException {
+		BufferedReader bufferedReader=null;
 		int iteration=0;
 		try {
 			LOGGER.info("Start storing the CSV file data in PostgreSQL database");
-			BufferedReader bufferedReader = new BufferedReader(new FileReader("src/main/resources/movies.csv"));
+			bufferedReader = new BufferedReader(new FileReader("src/main/resources/movies.csv"));
 			while ((line = bufferedReader.readLine()) != null) {
 				if(iteration == 0) {
 					iteration++;
@@ -58,13 +59,24 @@ public class MovieListApplication extends WebMvcConfigurerAdapter implements Com
 				if(!data[16].isEmpty()) {
 					fileDataEntity.setBudget(Integer.parseInt(data[16]));
 				}
-				if(!data[20].isEmpty())
-				fileDataEntity.setReviews_from_users(Integer.parseInt(data[20]));
+				if(!data[20].isEmpty()) {
+					fileDataEntity.setReviews_from_users(Integer.parseInt(data[20]));
+				}
 				fileRepository.save(fileDataEntity);
 			}
 			LOGGER.info("Data is successfully stored in PostgreSQL database");
 		} catch (Exception e) {
 			LOGGER.error("Exception:" + e);
+		}finally {
+			// this block will be executed in every case, success or caught exception
+			if (bufferedReader != null) {
+				// again, a resource is involved, so try-catch another time
+				try {
+					bufferedReader.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
 		}
 	}
 }
